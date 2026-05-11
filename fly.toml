@@ -1,18 +1,23 @@
-app = "supersplat"
+# fly.toml app configuration file generated for supersplat-fi on 2026-05-11T15:17:05Z
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
 
-primary_region = "sin"
+app = 'supersplat-fi'
+primary_region = 'sin'
 
 [build]
 
 [http_service]
   internal_port = 8080
   force_https = true
-  auto_stop_machines = "suspend"
+  auto_stop_machines = 'suspend'
   auto_start_machines = true
   min_machines_running = 0
-  processes = ["app"]
+  processes = ['app']
 
 [[vm]]
-  memory = "512mb"
-  cpu_kind = "shared"
+  memory = '512mb'
+  cpu_kind = 'shared'
   cpus = 1
+  memory_mb = 512
