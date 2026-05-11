@@ -1,29 +1,29 @@
 # =========================
-# Stage 1 — Build
+# Builder
 # =========================
 FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-COPY package*.json ./
+# pnpm required
+RUN corepack enable
+RUN corepack prepare pnpm@latest --activate
 
-RUN npm install
+COPY package.json pnpm-lock.yaml ./
+
+RUN pnpm install --frozen-lockfile
 
 COPY . .
 
-RUN npm run build
+RUN pnpm build
 
 # =========================
-# Stage 2 — Runtime
+# Runtime
 # =========================
-FROM node:20-alpine
+FROM nginx:stable-alpine
 
-WORKDIR /app
-
-RUN npm install -g serve
-
-COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/dist /usr/share/nginx/html
 
 EXPOSE 8080
 
-CMD ["serve", "-s", "dist", "-l", "8080"]
+CMD ["nginx", "-g", "daemon off;"]
