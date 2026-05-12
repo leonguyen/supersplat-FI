@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: supersplat
+    env: static
+    buildCommand: npm install && npm run build
+    publishDir: dist  # Adjust to actual build output
